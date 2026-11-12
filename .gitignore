@@ -1,0 +1,24 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Ignore Kotlin plugin data
+.kotlin
+
+# Compiled class files
+*.class
+
+# Log and package files
+*.log
+*.jar
+*.war
+*.ear
+
+# VS Code generated folders
+bin/
+.vscode/
+.settings/
+.classpath
+.project
