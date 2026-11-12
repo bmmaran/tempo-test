@@ -1,6 +1,6 @@
 # Tempo Test
 
-This submission for take-home coding assignment from Tempo. Assignment instructions are here:
+This is the submission for take-home coding assignment from Tempo. Assignment instructions are here:
 https://gist.github.com/hdamoo/d2a6c4026ebe0deaf7b4ceaa3bc5c6c1
 
 ## Task 1
@@ -11,11 +11,11 @@ Task Files:
 Other stuff:
 * Supporting classes are in `app\src\main\java\tempo\test` package
 * Created additional test classes in `app\src\test\java\tempo\test\` to have 100% line/branch code coverage.
-* It is a Gradle project. The project tempates are auto-created by VS Code. The tests runs within VS Code.
+* It is a Gradle project. The project tempate is auto-created by VS Code. The tests run within VS Code.
 
 **Assumptions Made**
 * I am not expected to implement any other implementation of the `Hierarchy` interface.
-* I am not expected to make any other changes to the code than implement the `filter()` method and write unit tests for it.
+* I am not expected to make any other changes to the code than implementing the `filter()` method and writing unit tests for it.
 
 **Translating the Condition**
 
