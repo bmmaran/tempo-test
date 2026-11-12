@@ -111,4 +111,34 @@ public class HierarchyFilterTest {
                 new int[] { 1, 3, 4, 5, 6 },
                 new int[] { 0, 1, 2, 2, 2 });
     }
+
+    @Test
+    void testFilter_leafNodesRemoved_keepsInternalNodes() {
+        assertFilteredHierarchyEquals(
+                new int[] { 1, 2, 3, 4, 5, 6, 7 },
+                new int[] { 0, 1, 1, 2, 2, 2, 3 },
+                nodeId -> nodeId != 4 && nodeId != 5 && nodeId != 6 && nodeId != 7,
+                new int[] { 1, 2, 3 },
+                new int[] { 0, 1, 1 });
+    }
+
+    @Test
+    void testFilter_lastNodeRemoved_keepsEarlierNodes() {
+        assertFilteredHierarchyEquals(
+                new int[] { 1, 2, 3, 4 },
+                new int[] { 0, 1, 1, 2 },
+                nodeId -> nodeId != 4,
+                new int[] { 1, 2, 3 },
+                new int[] { 0, 1, 1 });
+    }
+
+    @Test
+    void testFilter_singleRootRemoved_removesOnlyThatTree() {
+        assertFilteredHierarchyEquals(
+                new int[] { 1, 2, 3, 4, 10, 11, 12, 13, 20, 21 },
+                new int[] { 0, 1, 1, 2, 0, 1, 1, 2, 0, 1 },
+                nodeId -> nodeId != 10,
+                new int[] { 1, 2, 3, 4, 20, 21 },
+                new int[] { 0, 1, 1, 2, 0, 1 });
+    }
 }

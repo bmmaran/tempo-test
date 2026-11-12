@@ -7,6 +7,10 @@ import java.util.Arrays;
  * well.
  */
 public class HierarchyFilter {
+    private HierarchyFilter() {
+        // Prevent instantiation; to be used as a static utility class.
+    }
+
     public static Hierarchy filter(Hierarchy hierarchy, java.util.function.IntPredicate nodeIdPredicate) {
         int[] filteredNodeIds = new int[hierarchy.size()];
         int[] filteredDepths = new int[hierarchy.size()];
