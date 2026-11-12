@@ -50,10 +50,13 @@ public class SimpleCache<K, V> {
 
 1. We should allow cache TTL to be set by the user instead of a static value within the class. The TTL can change depending on the nature of the data that is being cached
 1. We need Null-checks on keys and values of both the `put()` and `get()` methods because we could end up wrapping a `null` value with a `CacheEntry` object. Should do a null-check in the `CacheEtnry` constructor as well.
-1. there should be a size limit on the `cache`. In order to control the size, We should implement a scheduled sweeper logic to periodicaly remove the oldest entities (assuming we want LRU cache) if the cache size exceeds a max size (again a configurable parameter). If not, we need to switch the implemention from ConcurrentCacheMap to LinkedHashMap with manual synchronized blocks.
-1. the `get()` method should clean up the expired data before returning `null` to prevent the cahe from continuously growing and later resulting in OutOfMemory issue.
-1. The `get()` method returns `null` when the TTL is expired. This means we are expecting another component to be responsible for refreshing the cache. Let's say that's the `CacheManager`. That cache manager's `get()` method should have a if-null-then-load-and-put logic. Considering the `load()` is expected to be a slow operation, it will increase the latency of the manager's `get()` call every minute; considering it is a high read system, 1000s of `get()` calls on a hot-key will experience high latency every minute.
+1. there should be a size limit on the `cache` to avoid we running out of heapspace. 
+   * In order to control the size, We should implement a scheduled sweeper logic to periodicaly remove the oldest entities (assuming we want LRU cache) if the cache size exceeds a max size (again a configurable parameter). 
+   * If not, we need to switch the implemention from ConcurrentCacheMap to LinkedHashMap with manual synchronized blocks.
+1. The `get()` method should clean up the expired data before returning `null` to prevent the cahe from continuously growing and later resulting in OutOfMemory issue. 
+   * We should still implement this even if we have the above sweeper logic -- sweeper is more resource consuming than this quick cleanup.
+1. The `get()` method returns `null` when the TTL is expired. This means we are expecting another component to be responsible for refreshing the cache. Let's say that's the `CacheManager`. That cache manager's `get()` method should have a cache refresh logic (`load`/`put`) if it receivees a `null` from `SimpleCache`. Considering the `load()` is expected to be a slow operation, it will increase the latency of the manager's `get()` call every minute on a particular key. Considering it is a read-heavy system, 1000s of `get()` calls on a hot-key will experience high latency every minute reducing the usefulness of the cache.
    * Tthe manager should implement a lazy-load to prevent this; i.e. return whatever it has in the cache immediately while refresh the cache asynchronously.
    * also note that the load/put could possibly override a newer write/put. We should implement a lock mechanism that favors the write over the load
-1. should emit metrics on cache hit/miss
-1. `System.currentTimeMillis()` is impacted by system setup like NTP adjustment. Should use `System.naoTime()` which uses epoche time measure
+1. We should emit metrics on cache hit/miss to make a data-driven decision on the cache size and TTL value.
+1. minor: `System.currentTimeMillis()` is impacted by system setup like NTP adjustment. Should use `System.naoTime()` which uses epoche time measure
