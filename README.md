@@ -16,6 +16,7 @@ Other stuff:
 **Assumptions Made**
 * I am not expected to implement any other implementation of the `Hierarchy` interface.
 * I am not expected to make any other changes to the code than implementing the `filter()` method and writing unit tests for it.
+* The `nodes` and `depths` are provided as pre-ordered DFS traversal; i.e. parent comes before its children.
 
 **Translating the Condition**
 
